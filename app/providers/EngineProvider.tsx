@@ -22,7 +22,6 @@ export const EngineProvider = ({ children }: any) => {
     // Функция для выбора объекта
     const handleSelect = (gameObject: any) => {
         setSelectedObject(gameObject); // Обновляем состояние
-        alert(gameObject.tag); // Используем переданный объект
     };
 
     // Инициализация движка

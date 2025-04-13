@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import { ObjectItem } from './partials/ObjectItem';
 import { useEngine } from '../providers/EngineProvider';
 export const ObjectHierarchy = () => {
-    const { engine, sdk, selectObject } = useEngine();
+    const { engine, sdk, selectObject, selectedObject } = useEngine();
     const [objects, setObjects] = useState<any[]>([]);
     const nameBox = useRef<HTMLInputElement>(null);
     const handleCreateClick = async () => {
@@ -21,15 +21,19 @@ export const ObjectHierarchy = () => {
             box.transform.position[1] = 0;
             box.transform.position[2] = 15;
 
-            box.transform.rotation[1] = 0.5;
             box.AddComponent(renderer);
             engine._objects.push(box);
+            engine.start();
             nameBox.current.value = "";
             setObjects([...engine._objects]);
         }
     }
     const handleRemoveClick = (object: any) => {
+        if (selectedObject === object) {
+            selectObject(null);
+        }
         engine._objects = engine._objects.filter((obj: any) => obj !== object);
+
         setObjects([...engine._objects]);
     }
     return (

@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link';
 import { useState } from 'react';
 export const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,9 +14,12 @@ export const Header = () => {
                     Web Engine
                 </div>
                 <nav className="hidden md:flex space-x-4">
-                    <a href="#" className="active-element">
-                        Главная
-                    </a>
+                    <Link href="/editor">
+                        <p className="active-element">
+                            Редактор
+                        </p>
+                    </Link>
+
                     <a href="#" className="active-element">
                         Документация
                     </a>
