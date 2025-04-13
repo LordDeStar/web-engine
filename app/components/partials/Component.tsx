@@ -1,10 +1,14 @@
 'use client'
 
 import { useState } from "react";
+import { Transform } from "./Transform";
 
 export const Component = ({ componentObj }: any) => {
     const [isClicked, setIsClicked] = useState<boolean>(false);
     const test = (obj: any) => {
+        if (!obj.name){
+            return (<Transform transform={obj}/>)
+        }
         const arr = [1];
         let counter = 0;
         return arr;
