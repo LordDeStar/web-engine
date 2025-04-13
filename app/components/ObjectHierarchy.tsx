@@ -6,7 +6,7 @@ export const ObjectHierarchy = () => {
     const { engine, sdk, selectObject } = useEngine();
     const [objects, setObjects] = useState<any[]>([]);
     const nameBox = useRef<HTMLInputElement>(null);
-    const handleCreateClick = () => {
+    const handleCreateClick = async () => {
         if (nameBox.current) {
             const name = nameBox.current.value;
             if (name == "") {
@@ -14,8 +14,17 @@ export const ObjectHierarchy = () => {
                 return;
             }
 
+            const geometry = await sdk.TemplateGeometry.loadFromOBJ('/assets/models/cube/cube.obj');
+            const renderer = new sdk.Renderer(geometry, '/assets/models/cube/default.mtl', true);
             const box = new sdk.GameObject(name);
+            box.transform.position[0] = 0;
+            box.transform.position[1] = 0;
+            box.transform.position[2] = 15;
+
+            box.transform.rotation[1] = 0.5;
+            box.AddComponent(renderer);
             engine._objects.push(box);
+            nameBox.current.value = "";
             setObjects([...engine._objects]);
         }
     }
