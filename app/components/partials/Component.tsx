@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Transform } from "./Transform";
+import { Renderer } from "./Renderer";
 
 export const Component = ({ componentObj }: any) => {
     const [isClicked, setIsClicked] = useState<boolean>(false);
@@ -9,9 +10,10 @@ export const Component = ({ componentObj }: any) => {
         if (!obj?.name) {
             return (<Transform transform={obj} />)
         }
-        const arr = [1];
-        let counter = 0;
-        return arr;
+        switch (obj?.name) {
+            case 'renderer':
+                return <Renderer renderer={obj} />
+        }
     };
 
     return (

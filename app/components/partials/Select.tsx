@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef } from 'react';
-export const Select = ({ values }: { values: string[] }) => {
+export const Select = ({ values }: { values: any[] }) => {
     const [text, setText] = useState<string>('');
     const [isClicked, setIsClicked] = useState<boolean>(false);
     const options = ['', ...values];

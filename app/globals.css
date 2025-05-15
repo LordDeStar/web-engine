@@ -3,6 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --gradient-angel: 150deg;
 }
 
 @theme inline {
@@ -40,7 +41,7 @@ body {
 
 .active-element {
   z-index: 10;
-  @apply relative bg-neutral-700 px-3 py-2 rounded font-bold
+  @apply relative bg-neutral-800 px-3 py-2 rounded font-bold
 }
 
 .active-element::before {
@@ -67,4 +68,34 @@ body {
 .dropdown.open {
   max-height: 200px;
   opacity: 1;
+}
+
+input {
+  @apply outline-3 outline-transparent transition-colors duration-300;
+}
+
+input:hover {
+  @apply outline-amber-600;
+}
+
+textarea {
+  @apply outline-3 outline-transparent transition-colors duration-300;
+}
+
+textarea:hover {
+  @apply outline-amber-600
+}
+
+.active {
+  @apply scale-[1.25] text-transparent bg-clip-text bg-linear-60 from-red-500 to-orange-500;
+}
+
+
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  scrollbar-width: none;
 }

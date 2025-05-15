@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link';
 import { useState } from 'react';
+import { userStore } from '../stores/user-store';
 export const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const toggleMenu = () => {
@@ -16,16 +17,16 @@ export const Header = () => {
                 <nav className="hidden md:flex space-x-4">
                     <Link href="/editor">
                         <p className="active-element">
-                            Редактор
+                            Проекты
                         </p>
                     </Link>
 
                     <a href="#" className="active-element">
                         Документация
                     </a>
-                    <a href="#" className="active-element">
-                        Профиль
-                    </a>
+                    <button onClick={() => { userStore.clearToken(); }} className="active-element">
+                        Выйти
+                    </button>
                 </nav>
                 <button
                     onClick={toggleMenu}

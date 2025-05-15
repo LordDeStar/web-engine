@@ -6,7 +6,7 @@ import { Component } from "./partials/Component";
 
 
 export const Inspector = () => {
-    const { sdk, selectedObject } = useEngine();
+    const { selectedObject } = useEngine();
     return (
         <div className="flex flex-col w-full h-full overflow-x-hidden">
             <h1 className='flex items-center justify-center text-2xl min-w-fit w-2/5 h-25 rounded-br-4xl bg-neutral-600 '>Inspector</h1>
