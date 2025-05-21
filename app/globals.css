@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -20,13 +22,6 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  @apply bg-neutral-800
-}
-
 .scrollable {
   scrollbar-width: none;
   /* Для Firefox */
@@ -41,13 +36,13 @@ body {
 
 .active-element {
   z-index: 10;
-  @apply relative bg-neutral-800 px-3 py-2 rounded font-bold
+  @apply relative left-1 px-3 py-2.5 rounded font-bold
 }
 
 .active-element::before {
   content: '';
   z-index: -1;
-  @apply absolute w-0 h-full bg-linear-45 from-red-600 to-orange-400 rounded top-0 left-0 transition-all duration-500 ease-in-out
+  @apply absolute w-0 h-full rounded top-0 left-0 transition-all duration-500 ease-in-out
 }
 
 .active-element:hover::before {
@@ -70,25 +65,6 @@ body {
   opacity: 1;
 }
 
-input {
-  @apply outline-3 outline-transparent transition-colors duration-300;
-}
-
-input:hover {
-  @apply outline-amber-600;
-}
-
-textarea {
-  @apply outline-3 outline-transparent transition-colors duration-300;
-}
-
-textarea:hover {
-  @apply outline-amber-600
-}
-
-.active {
-  @apply scale-[1.25] text-transparent bg-clip-text bg-linear-60 from-red-500 to-orange-500;
-}
 
 
 
@@ -98,4 +74,9 @@ textarea:hover {
 
 * {
   scrollbar-width: none;
+}
+
+
+.toggle-circle {
+  @apply absolute aspect-square h-[80%] rounded-full bg-gray-300 dark:bg-neutral-900 dark:translate-x-full shadow-md transition-all top-[10%] left-[10%] duration-300 z-21;
 }

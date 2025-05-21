@@ -1,6 +1,7 @@
 'use client';
 import { createContext, useContext, useEffect, useState } from 'react';
-import SDK from '../../public/assets/scripts/engine';
+import SDK from '@/public/assets/scripts/engine';
+import { sceneStore } from '../stores/scene-store';
 
 // Создаем контекст
 const EngineContext = createContext<any>(null);
@@ -27,8 +28,8 @@ export const EngineProvider = ({ children }: any) => {
     // Инициализация движка
     useEffect(() => {
         const initializeEngine = async () => {
-            const newEngine = new SDK.Engine();
-            setEngine({ engine: newEngine, sdk: SDK, selectObject: handleSelect });
+            sceneStore.initEngine();
+            setEngine({ engine: sceneStore.engine, sdk: SDK, selectObject: handleSelect });
         };
 
         initializeEngine();

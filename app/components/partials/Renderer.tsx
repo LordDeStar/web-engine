@@ -6,6 +6,8 @@ import { FileSelector } from './FileSelector';
 export const Renderer = ({ renderer }: any) => {
     const [color, setColor] = useState<number[]>([...renderer.color]);
     const [geometry, setGeometry] = useState<any>({ title: 'Выбор файла' });
+    const [texture, setTexture] = useState<any>({ title: 'Выбор файла' })
+    const [isDrawingEdges, setDrawingEdges] = useState<boolean>(true);
     const red = useRef<any>(null);
     const green = useRef<any>(null);
     const blue = useRef<any>(null);
@@ -18,6 +20,10 @@ export const Renderer = ({ renderer }: any) => {
         renderer.loadFromUrl(geometry.fileUrl);
     }
 
+    if (texture?.fileUrl) {
+        renderer.loadTexture(texture.fileUrl);
+    }
+    renderer.isDrawingEdges = isDrawingEdges;
     const onChangeColor = () => {
         const result: number[] = [];
         if (red.current) result.push(red.current.value);
@@ -35,6 +41,11 @@ export const Renderer = ({ renderer }: any) => {
         <div className="flex flex-col p-2 gap-y-2.5">
 
             <div className="flex flex-col">
+
+
+                <h1 className="text-2xl">Drawing edges: <span className='text-cyan-500 dark:text-amber-500' onClick={() => setDrawingEdges(!isDrawingEdges)}>{isDrawingEdges.toString()}</span></h1>
+                <hr className="border-neutral-800" />
+
                 <h1 className="text-2xl">Color:</h1>
                 <div className="flex flex-col ml-2.5 gap-y-2">
 
@@ -60,8 +71,13 @@ export const Renderer = ({ renderer }: any) => {
             <hr className="border-neutral-800" />
 
             <div className='flex flex-col'>
-                <h1 className='text-2xl'>Geometry</h1>
+                <h1 className='text-2xl mb-2'>Geometry</h1>
                 <FileSelector selected={geometry} handleSelect={(file: any) => setGeometry(file)} />
+            </div>
+            <hr className="border-neutral-800" />
+            <div className='flex flex-col'>
+                <h1 className='text-2xl mb-2'>Texture</h1>
+                <FileSelector selected={texture} handleSelect={(file: any) => setTexture(file)} />
             </div>
         </div>
     );

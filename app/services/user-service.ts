@@ -5,8 +5,10 @@ export class UserService {
     public static async registration(username: string, password: string): Promise<any> {
         const { data } = await api.post("users/create-user", { username, password });
         if (data.message == "success") return await UserService.authorization(username, password);
-        if (data.error) return { error: data.error };
-        return { error: data.message[0] };
+        else if (data.message[0]) {
+            return { error: data.message[0] };
+        }
+        return { error: data.error }
     }
 
     public static async authorization(username: string, password: string): Promise<any> {

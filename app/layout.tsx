@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "./components/Header";
+import { ThemeProvider } from "./providers/ThemeProvider";
 
 
 
@@ -16,10 +17,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <Header />
-        {children}
+    <html lang="en" className="dark">
+      <body className="bg-white dark:bg-neutral-800 transition-colors duration-300">
+        <ThemeProvider>
+          <Header />
+          {children}
+        </ThemeProvider>
+
       </body>
     </html >
   );

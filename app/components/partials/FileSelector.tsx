@@ -5,7 +5,7 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 const SelectItem = ({ file, changeSelected }: any) => {
     return (
-        <p onClick={changeSelected}>{file.title}</p>
+        <p className="m-1 p-2 hover:bg-gray-600 dark:hover:bg-neutral-400 rounded-[6px]" onClick={changeSelected}>{file.title}</p>
     );
 }
 
@@ -13,11 +13,11 @@ const SelectItem = ({ file, changeSelected }: any) => {
 export const FileSelector = observer(({ selected, handleSelect }: any) => {
     const [isClicked, setIsClicked] = useState<boolean>(false);
 
-    const classes = `${isClicked ? 'rotate-90' : ''} transition-transform  duration-300`;
+    const classes = `${isClicked ? 'rotate-90 ' : ''} transition-transform  duration-300`;
 
-    const roundedClasses = `${isClicked ? 'rounded-tl-2xl rounded-tr-2xl ' : 'rounded-2xl'} `
+    const roundedClasses = `${isClicked ? 'rounded-tl-2xl rounded-tr-2xl z-10' : 'rounded-2xl z-1'} `
     return (
-        <div onClick={() => setIsClicked(!isClicked)} className={`flex relative h-12 p-2 items-center justify-between ${roundedClasses} bg-neutral-600 transition-all duration-300 z-10`}>
+        <div onClick={() => setIsClicked(!isClicked)} className={`flex relative h-12 p-2 items-center text-white justify-between ${roundedClasses} bg-gray-400 dark:bg-neutral-600 transition-all duration-300 z-1`}>
 
             <h1 className="text-xl text-white">{selected.title}</h1>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className={classes} viewBox="0 0 16 16">
@@ -25,7 +25,7 @@ export const FileSelector = observer(({ selected, handleSelect }: any) => {
             </svg>
 
             {
-                isClicked && <div className="absolute top-[50px] left-0 w-full rounded-bl-2xl rounded-br-2xl bg-neutral-600 h-8 z-11">
+                isClicked && <div className="absolute top-[50px] left-0 w-full rounded-bl-2xl rounded-br-2xl bg-gray-400 dark:bg-neutral-600 min-h-8 z-11">
                     {
                         fileStore.files.map((file: any, index: number) => (
                             <SelectItem key={index} file={file} changeSelected={() => handleSelect(file)} />

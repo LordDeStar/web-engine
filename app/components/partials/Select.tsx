@@ -15,7 +15,7 @@ export const Select = ({ values }: { values: any[] }) => {
     };
 
     return (
-        <div className={`relative flex flex-col w-full p-3 ${isClicked ? 'rounded-t-[6px]' : 'rounded-[6px]'} bg-neutral-700`}>
+        <div className={`relative flex flex-col w-full p-3 ${isClicked ? 'rounded-t-[6px]' : 'rounded-[6px]'} text-white  bg-gray-400 dark:bg-neutral-700`}>
             {/* Заголовок */}
             <div
                 className="flex px-2.5 justify-between items-center cursor-pointer"
@@ -41,7 +41,7 @@ export const Select = ({ values }: { values: any[] }) => {
                     <p
                         key={index}
                         onClick={() => handleSelect(item)}
-                        className="text-2xl px-2.5 py-0.5 bg-neutral-700 hover:bg-neutral-500 cursor-pointer"
+                        className="text-2xl px-2.5 py-0.5 bg-gray-400 dark:bg-neutral-700 hover:bg-neutral-500 cursor-pointer"
                     >
                         {item || 'Empty'}
                     </p>

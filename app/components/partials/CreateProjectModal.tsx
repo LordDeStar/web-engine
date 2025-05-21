@@ -37,10 +37,10 @@ export const CreateProjectModal = ({ onClose }: any) => {
             ></div>
 
             {/* Модальное окно */}
-            <div className="relative z-50 bg-neutral-800 p-6 rounded-lg shadow-lg w-full max-w-md">
+            <div className="relative z-50 bg-gray-300 dark:bg-neutral-800 p-6 rounded-lg shadow-lg w-full max-w-md">
                 {/* Заголовок и кнопка закрытия */}
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-xl font-bold text-white">Создать проект</h1>
+                    <h1 className="text-3xl font-bold text-cyan-500  dark:text-amber-500">Создать проект</h1>
                     <button
                         onClick={handleClose}
                         className="p-1 rounded-md text-red-500 hover:bg-red-500 hover:text-white transition-colors duration-200"
@@ -68,14 +68,15 @@ export const CreateProjectModal = ({ onClose }: any) => {
                     <div>
                         <label
                             htmlFor="project-name"
-                            className="block text-sm font-medium text-gray-300"
+                            className="block text-sm font-medium text-gray-500 dark:text-gray-300"
                         >
                             Название проекта:
                         </label>
                         <input
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder="Введите название"
-                            className="mt-1 block w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-md text-white placeholder-neutral-400 focus:outline-none focus:ring-3 focus:ring-red-700 transition-all duration-300"
+                            className="mt-1 block w-full px-3 py-2 rounded-2xl outline-transparent bg-neutral-400 dark:bg-neutral-600 text-white outline-3 hover:outline-emerald-600
+                            dark:hover:outline-amber-500 placeholder-white dark:placeholder-neutral-400 focus:outline-none focus:ring-3 focus:ring-cyan-500 dark:focus:ring-red-700 transition-colors duration-300"
                         />
                     </div>
 
@@ -83,7 +84,7 @@ export const CreateProjectModal = ({ onClose }: any) => {
                     <div>
                         <label
                             htmlFor="project-description"
-                            className="block text-sm font-medium text-gray-300"
+                            className="block text-sm font-medium text-gray-500 dark:text-gray-300"
                         >
                             Краткое описание:
                         </label>
@@ -91,7 +92,8 @@ export const CreateProjectModal = ({ onClose }: any) => {
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder="Опишите ваш проект..."
                             rows={3}
-                            className="mt-1 block w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-md text-white placeholder-neutral-400 resize-none focus:outline-none focus:ring-3 focus:ring-red-700 transition-all duration-300"
+                            className="mt-1 block w-full px-3 py-2 rounded-2xl outline-transparent bg-neutral-400 dark:bg-neutral-600 text-white outline-3 hover:outline-emerald-600
+                            dark:hover:outline-amber-500 placeholder-white dark:placeholder-neutral-400 focus:outline-none focus:ring-3 focus:ring-cyan-500 dark:focus:ring-red-700 transition-colors duration-300"
                         ></textarea>
                     </div>
 
@@ -99,7 +101,7 @@ export const CreateProjectModal = ({ onClose }: any) => {
                     <div className="flex justify-end space-x-3 mt-6">
                         {/* Кнопка создания */}
                         <button
-                            className="active-element text-2xl"
+                            className="active-element text-white bg-neutral-400 dark:bg-neutral-600 before:bg-linear-45 before:content-[''] before:from-cyan-500 before:to-emerald-500 dark:before:from-red-600 dark:before:to-orange-400 text-2xl"
                             onClick={handleCreate}
                         >
                             Создать

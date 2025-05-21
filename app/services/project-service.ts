@@ -1,3 +1,4 @@
+import { error } from 'console';
 import { fileStore } from "../stores/file-store";
 import api from "../utils/api";
 
@@ -78,6 +79,25 @@ export class ProjectService {
         }
         await this.getFiles(parentId);
 
+    }
+
+    public static async saveProject(projectId: number, json: string[]) {
+        const { data } = await api.post(`/projects/${projectId}/save`, { json });
+
+        if (data.error) {
+            return { error: data.error };
+        }
+        return { message: data.message };
+    }
+
+
+    public static async loadProject(projectId: number) {
+        const { data } = await api.get(`/projects/${projectId}/load`);
+
+        if (data.error) {
+            return { error: data.error };
+        }
+        return { message: data.message };
     }
 
 }

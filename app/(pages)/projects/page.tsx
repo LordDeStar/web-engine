@@ -45,7 +45,6 @@ const Projects = observer(() => {
         <div className="mt-5 flex flex-col justify-center items-center h-[90vh] w-full">
             <ProjectPanel />
             <div className="p-10 flex flex-col gap-6 min-h-[500px] overflow-y-scroll h-[80%] w-[80%] rounded-br-3xl rounded-bl-3xl shadow-inset shadow-2xl">
-                {/* Используем данные из MobX-хранилища */}
                 {getProjects()}
             </div>
         </div>

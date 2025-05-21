@@ -3695,6 +3695,71 @@ class Animator {
 
 /***/ }),
 
+/***/ "./public/engine/core/components/Camera.ts":
+/*!*************************************************!*\
+  !*** ./public/engine/core/components/Camera.ts ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Camera: () => (/* binding */ Camera)
+/* harmony export */ });
+/* harmony import */ var gl_matrix__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! gl-matrix */ "./node_modules/gl-matrix/esm/mat4.js");
+/* harmony import */ var gl_matrix__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! gl-matrix */ "./node_modules/gl-matrix/esm/vec3.js");
+/* harmony import */ var _eng__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../eng */ "./public/engine/core/eng.ts");
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+class Camera {
+    constructor() {
+        this.owner = null;
+        this.isGameStart = false;
+        this.name = "camera";
+        this.viewMatrix = gl_matrix__WEBPACK_IMPORTED_MODULE_1__.create();
+        this.eye = gl_matrix__WEBPACK_IMPORTED_MODULE_2__.fromValues(0, 0, 3);
+        this.center = gl_matrix__WEBPACK_IMPORTED_MODULE_2__.fromValues(0, 0, 5);
+        this.up = gl_matrix__WEBPACK_IMPORTED_MODULE_2__.fromValues(0, 1, 0);
+    }
+    updateMatrix() {
+        if (this.owner) {
+            this.eye = this.owner.transform.position;
+        }
+        gl_matrix__WEBPACK_IMPORTED_MODULE_1__.lookAt(this.viewMatrix, this.eye, this.center, this.up);
+    }
+    OnStart() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.updateMatrix();
+            if (this.isGameStart)
+                _eng__WEBPACK_IMPORTED_MODULE_0__.Engine.viewMatrix = this.viewMatrix;
+        });
+    }
+    OnUpdate() {
+        this.updateMatrix();
+        if (this.isGameStart)
+            _eng__WEBPACK_IMPORTED_MODULE_0__.Engine.viewMatrix = this.viewMatrix;
+    }
+    BeforeRemove() {
+        _eng__WEBPACK_IMPORTED_MODULE_0__.Engine.viewMatrix = _eng__WEBPACK_IMPORTED_MODULE_0__.Engine.createViewMatrix();
+    }
+    toJson() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return '';
+        });
+    }
+}
+
+
+/***/ }),
+
 /***/ "./public/engine/core/components/Renderer.ts":
 /*!***************************************************!*\
   !*** ./public/engine/core/components/Renderer.ts ***!
@@ -3734,7 +3799,7 @@ class Renderer {
         this.owner = null;
         this._projection = gl_matrix__WEBPACK_IMPORTED_MODULE_5__.create();
         this._viewMatrix = gl_matrix__WEBPACK_IMPORTED_MODULE_5__.create();
-        this._isDrawingEdges = isDrawingEdges;
+        this.isDrawingEdges = isDrawingEdges;
         this.loadGeometry(geometry);
         this._isMaterialLoaded = false;
         this._materialUrl = materialUrl;
@@ -3782,6 +3847,7 @@ class Renderer {
     loadFromUrl(url) {
         return __awaiter(this, void 0, void 0, function* () {
             const geometry = yield _objects_geometries__WEBPACK_IMPORTED_MODULE_0__.TemplateGeometry.loadFromOBJ(url);
+            this.geometryUrl = url;
             this.loadGeometry(geometry);
         });
     }
@@ -3796,14 +3862,11 @@ class Renderer {
     }
     toJson() {
         return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
             resolve(JSON.stringify({
                 name: this.name,
-                material: yield ((_a = this.material) === null || _a === void 0 ? void 0 : _a.toJson()),
-                viewMatrix: Array.from(this._viewMatrix),
-                projection: Array.from(this._projection),
-                geometry: yield ((_b = this._geometry) === null || _b === void 0 ? void 0 : _b.toJson()),
-                drawingEdges: this._isDrawingEdges,
+                materialUrl: this._materialUrl,
+                geometryUrl: this.geometryUrl,
+                textureUrl: this.textureUrl
             }));
         }));
     }
@@ -3836,7 +3899,7 @@ class Renderer {
         let loc = this.material.getUniformPosition('matrix', 'basic');
         _gl_gl__WEBPACK_IMPORTED_MODULE_3__.gl.uniformMatrix4fv(loc, false, new Float32Array(mvpMatrix));
         this._geometry.draw();
-        if (this._isDrawingEdges) {
+        if (this.isDrawingEdges) {
             this.material.edgeUse();
             posLocation = this.material.getAttributePosition('pos', 'edge');
             if (posLocation == -1) {
@@ -3923,6 +3986,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AnimationClip: () => (/* reexport safe */ _components_Animator__WEBPACK_IMPORTED_MODULE_8__.AnimationClip),
 /* harmony export */   Animator: () => (/* reexport safe */ _components_Animator__WEBPACK_IMPORTED_MODULE_8__.Animator),
+/* harmony export */   Camera: () => (/* reexport safe */ _components_Camera__WEBPACK_IMPORTED_MODULE_9__.Camera),
 /* harmony export */   Cube: () => (/* reexport safe */ _objects_geometries__WEBPACK_IMPORTED_MODULE_7__.Cube),
 /* harmony export */   Engine: () => (/* binding */ Engine),
 /* harmony export */   GLUtilities: () => (/* reexport safe */ _gl_gl__WEBPACK_IMPORTED_MODULE_1__.GLUtilities),
@@ -3938,14 +4002,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Script */ "./public/engine/core/components/Script.ts");
 /* harmony import */ var _gl_gl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gl/gl */ "./public/engine/core/gl/gl.ts");
 /* harmony import */ var _objects_GameObject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./objects/GameObject */ "./public/engine/core/objects/GameObject.ts");
-/* harmony import */ var gl_matrix__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! gl-matrix */ "./node_modules/gl-matrix/esm/mat4.js");
 /* harmony import */ var gl_matrix__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! gl-matrix */ "./node_modules/gl-matrix/esm/vec3.js");
+/* harmony import */ var gl_matrix__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! gl-matrix */ "./node_modules/gl-matrix/esm/mat4.js");
 /* harmony import */ var _gl_light__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./gl/light */ "./public/engine/core/gl/light.ts");
 /* harmony import */ var _gl_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./gl/material */ "./public/engine/core/gl/material.ts");
 /* harmony import */ var _components_Renderer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Renderer */ "./public/engine/core/components/Renderer.ts");
 /* harmony import */ var _objects_transform__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./objects/transform */ "./public/engine/core/objects/transform.ts");
 /* harmony import */ var _objects_geometries__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./objects/geometries */ "./public/engine/core/objects/geometries.ts");
 /* harmony import */ var _components_Animator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/Animator */ "./public/engine/core/components/Animator.ts");
+/* harmony import */ var _components_Camera__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/Camera */ "./public/engine/core/components/Camera.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3965,16 +4030,61 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+
 class Engine {
     constructor(width, height) {
         this._objects = [];
+        this._color = null;
+        this.isMouseClicked = false;
         this.isInited = false;
     }
-    init(id) {
+    init(id, theme) {
         this._canvas = _gl_gl__WEBPACK_IMPORTED_MODULE_1__.GLUtilities.init(id);
+        this._color = theme;
         Engine._light = this.createLight();
-        this._viewMatrix = this.createViewMatrix();
+        Engine.viewMatrix = Engine.createViewMatrix();
+        this._canvas.addEventListener('mousemove', (e) => {
+            let mousePos = this.getMousePos(e);
+            if (mousePos && this.isMouseClicked) {
+                Engine.mousePosition = mousePos;
+            }
+        });
+        this._canvas.addEventListener('mousedown', (e) => {
+            if (e.button === 0) {
+                this.isMouseClicked = true;
+            }
+        });
+        this._canvas.addEventListener('mouseup', (e) => {
+            if (e.button === 0) {
+                this.isMouseClicked = false;
+            }
+        });
         this.isInited = true;
+    }
+    unproject(x, y, width, height, projectionMatrix, viewMatrix) {
+        const clipX = (2 * x) / width - 1;
+        const clipY = 1 - (2 * y) / height;
+        const clipZ = 0; // Предполагаем, что объект находится на плоскости z = 0
+        const clipSpace = gl_matrix__WEBPACK_IMPORTED_MODULE_10__.fromValues(clipX, clipY, clipZ);
+        const invMat = gl_matrix__WEBPACK_IMPORTED_MODULE_11__.create();
+        gl_matrix__WEBPACK_IMPORTED_MODULE_11__.multiply(invMat, projectionMatrix, viewMatrix);
+        gl_matrix__WEBPACK_IMPORTED_MODULE_11__.invert(invMat, invMat);
+        const worldSpace = gl_matrix__WEBPACK_IMPORTED_MODULE_10__.create();
+        gl_matrix__WEBPACK_IMPORTED_MODULE_10__.transformMat4(worldSpace, clipSpace, invMat);
+        return worldSpace;
+    }
+    getMousePos(event) {
+        if (!this._canvas)
+            return null;
+        const rect = this._canvas.getBoundingClientRect();
+        const scaleX = this._canvas.width / rect.width;
+        const scaleY = this._canvas.height / rect.height;
+        const x = (event.clientX - rect.left) * scaleX;
+        const y = (this._canvas.height - (event.clientY - rect.top) * scaleY);
+        const invertedY = this._canvas.height - y;
+        const projectionMatrix = this.createPerspectiveMatrix();
+        const viewMatrix = Engine.viewMatrix || gl_matrix__WEBPACK_IMPORTED_MODULE_11__.create();
+        return this.unproject(x, invertedY, this._canvas.width, this._canvas.height, projectionMatrix, viewMatrix);
     }
     createLight() {
         const light = new _gl_light__WEBPACK_IMPORTED_MODULE_3__.Light();
@@ -3998,12 +4108,12 @@ class Engine {
         this._objects.forEach(i => {
             let renderer = i.GetComponent("renderer");
             if (renderer) {
-                renderer.OnResize({ _projection: this.createPerspectiveMatrix(), _viewMatrix: this._viewMatrix });
+                renderer.OnResize({ _projection: this.createPerspectiveMatrix(), _viewMatrix: Engine.viewMatrix });
             }
         });
     }
     createPerspectiveMatrix() {
-        const projectionMatrix = gl_matrix__WEBPACK_IMPORTED_MODULE_9__.create();
+        const projectionMatrix = gl_matrix__WEBPACK_IMPORTED_MODULE_11__.create();
         if (!this._canvas) {
             return projectionMatrix;
         }
@@ -4011,28 +4121,34 @@ class Engine {
         const aspect = this._canvas.clientWidth / this._canvas.clientHeight;
         const zNear = 0.1;
         const zFar = 100.0;
-        gl_matrix__WEBPACK_IMPORTED_MODULE_9__.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
+        gl_matrix__WEBPACK_IMPORTED_MODULE_11__.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
         return projectionMatrix;
     }
-    createViewMatrix() {
-        const viewMatrix = gl_matrix__WEBPACK_IMPORTED_MODULE_9__.create();
+    static createViewMatrix() {
+        const viewMatrix = gl_matrix__WEBPACK_IMPORTED_MODULE_11__.create();
         const eye = gl_matrix__WEBPACK_IMPORTED_MODULE_10__.fromValues(0, 0, 3);
         const center = gl_matrix__WEBPACK_IMPORTED_MODULE_10__.fromValues(0, 0, 5);
         const up = gl_matrix__WEBPACK_IMPORTED_MODULE_10__.fromValues(0, 1, 0);
-        gl_matrix__WEBPACK_IMPORTED_MODULE_9__.lookAt(viewMatrix, eye, center, up);
+        gl_matrix__WEBPACK_IMPORTED_MODULE_11__.lookAt(viewMatrix, eye, center, up);
         return viewMatrix;
     }
-    start() {
+    start(theme) {
         return __awaiter(this, void 0, void 0, function* () {
-            _gl_gl__WEBPACK_IMPORTED_MODULE_1__.gl.clearColor(0, 0, 0, 1);
+            this._color = theme;
+            if (this._color && this._color == "light") {
+                _gl_gl__WEBPACK_IMPORTED_MODULE_1__.gl.clearColor(1, 1, 1, 1);
+            }
+            else {
+                _gl_gl__WEBPACK_IMPORTED_MODULE_1__.gl.clearColor(0, 0, 0, 1);
+            }
             _gl_gl__WEBPACK_IMPORTED_MODULE_1__.gl.enable(_gl_gl__WEBPACK_IMPORTED_MODULE_1__.gl.DEPTH_TEST);
-            this.resize();
             window.addEventListener('resize', () => this.resize());
             yield Promise.all(this._objects.map(obj => Promise.all(obj.components.map((component) => __awaiter(this, void 0, void 0, function* () {
                 if (typeof component.OnStart === 'function') {
                     yield component.OnStart();
                 }
             })))));
+            this.resize();
             this.loop();
         });
     }
@@ -4045,50 +4161,27 @@ class Engine {
         });
         requestAnimationFrame(() => this.loop());
     }
-    fromJson(json) {
+    saveToJson() {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const data = yield JSON.parse(json);
-                if (!Array.isArray(data.camera) || data.camera.length !== 16 || !data.camera.every((val) => typeof val === "number")) {
-                    throw new Error("Invalid camera matrix format in JSON");
-                }
-                const cameraMatrix = data.camera;
-                const objectList = Promise.all(data.objects.map((object) => __awaiter(this, void 0, void 0, function* () {
-                    yield _objects_GameObject__WEBPACK_IMPORTED_MODULE_2__.GameObject.fromJson(object);
-                })));
-                this._viewMatrix = gl_matrix__WEBPACK_IMPORTED_MODULE_9__.fromValues(...cameraMatrix);
-                Engine._light = yield _gl_light__WEBPACK_IMPORTED_MODULE_3__.Light.fromJson(data.light);
-                console.log(data.objects);
-            }
-            catch (_a) {
-                console.error("Error deserialize engine");
-            }
-        });
-    }
-    toJson() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this._viewMatrix) {
-                return "";
-            }
-            try {
-                // Ожидаем завершения всех асинхронных операций для объектов
-                const objectsJson = yield Promise.all(this._objects.map((object) => __awaiter(this, void 0, void 0, function* () { return yield object.toJson(); })));
-                // Сериализуем данные после завершения всех операций
-                return JSON.stringify({
-                    camera: Array.from(this._viewMatrix),
-                    light: yield Engine._light.toJson(),
-                    objects: objectsJson
-                });
-            }
-            catch (error) {
-                console.error("Error during engine serialization:", error);
-                throw error;
-            }
+            if (!Engine.viewMatrix)
+                throw new Error("Camera must be initialized!");
+            if (!Engine._light)
+                throw new Error("Light must be initialized!");
+            const objects = yield Promise.all(this._objects.map((object) => __awaiter(this, void 0, void 0, function* () {
+                return yield object.toJson();
+            })));
+            return JSON.stringify({
+                camera: Array.from(Engine.viewMatrix),
+                light: Engine._light.toJson(),
+                objects: objects,
+            });
         });
     }
 }
+Engine.mousePosition = gl_matrix__WEBPACK_IMPORTED_MODULE_10__.fromValues(0, 0, 5);
 
 const SDK = {
+    Camera: _components_Camera__WEBPACK_IMPORTED_MODULE_9__.Camera,
     AnimationClip: _components_Animator__WEBPACK_IMPORTED_MODULE_8__.AnimationClip,
     Animator: _components_Animator__WEBPACK_IMPORTED_MODULE_8__.Animator,
     Engine,
@@ -4727,6 +4820,7 @@ class Texture {
             image.onerror = () => {
                 reject(new Error(`Failed to load image: ${url}`));
             };
+            image.crossOrigin = 'anonymous';
             image.src = url;
         });
     }
@@ -4843,7 +4937,6 @@ class GameObject {
         if (component) {
             return component;
         }
-        console.error(`Component with name [${name}] is undefined`);
     }
     RemoveComponent(name) {
         let component = this.components.findIndex(com => com.name === name);
@@ -4872,7 +4965,6 @@ class GameObject {
     }
     toJson() {
         return __awaiter(this, void 0, void 0, function* () {
-            // Ожидаем завершения всех асинхронных операций для компонентов
             const componentsJson = yield Promise.all(this.components.map((component) => __awaiter(this, void 0, void 0, function* () { return yield component.toJson(); })));
             // Сериализуем объект после завершения всех операций
             return JSON.stringify({
@@ -5306,6 +5398,7 @@ class Transform {
 /******/ var __webpack_exports__ = __webpack_require__("./public/engine/core/eng.ts");
 /******/ var __webpack_exports__AnimationClip = __webpack_exports__.AnimationClip;
 /******/ var __webpack_exports__Animator = __webpack_exports__.Animator;
+/******/ var __webpack_exports__Camera = __webpack_exports__.Camera;
 /******/ var __webpack_exports__Cube = __webpack_exports__.Cube;
 /******/ var __webpack_exports__Engine = __webpack_exports__.Engine;
 /******/ var __webpack_exports__GLUtilities = __webpack_exports__.GLUtilities;
@@ -5317,7 +5410,7 @@ class Transform {
 /******/ var __webpack_exports__TemplateGeometry = __webpack_exports__.TemplateGeometry;
 /******/ var __webpack_exports__Transform = __webpack_exports__.Transform;
 /******/ var __webpack_exports__default = __webpack_exports__["default"];
-/******/ export { __webpack_exports__AnimationClip as AnimationClip, __webpack_exports__Animator as Animator, __webpack_exports__Cube as Cube, __webpack_exports__Engine as Engine, __webpack_exports__GLUtilities as GLUtilities, __webpack_exports__GameObject as GameObject, __webpack_exports__Material as Material, __webpack_exports__Renderer as Renderer, __webpack_exports__Script as Script, __webpack_exports__Sphere as Sphere, __webpack_exports__TemplateGeometry as TemplateGeometry, __webpack_exports__Transform as Transform, __webpack_exports__default as default };
+/******/ export { __webpack_exports__AnimationClip as AnimationClip, __webpack_exports__Animator as Animator, __webpack_exports__Camera as Camera, __webpack_exports__Cube as Cube, __webpack_exports__Engine as Engine, __webpack_exports__GLUtilities as GLUtilities, __webpack_exports__GameObject as GameObject, __webpack_exports__Material as Material, __webpack_exports__Renderer as Renderer, __webpack_exports__Script as Script, __webpack_exports__Sphere as Sphere, __webpack_exports__TemplateGeometry as TemplateGeometry, __webpack_exports__Transform as Transform, __webpack_exports__default as default };
 /******/ 
 
 //# sourceMappingURL=engine.js.map

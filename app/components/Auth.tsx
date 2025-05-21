@@ -11,10 +11,10 @@ const Auth = () => {
     const router = useRouter();
 
 
-    const classes = 'cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-linear-60 hover:from-red-500 hover:to-orange-500 transition-all duration-500';
+    const classes = 'cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-linear-60 hover:from-cyan-400 hover:to-emerald-400 dark:hover:from-red-500 dark:hover:to-orange-500 transition-all duration-500';
 
-    const authClasses = `${classes} ${isAuth ? 'active' : ''}`;
-    const regClasses = `${classes} ${isAuth ? '' : 'active'}`;
+    const authClasses = `${classes} ${isAuth ? 'scale-[1.25] text-transparent bg-clip-text bg-linear-60 from-cyan-400 to-emerald-400 dark:from-red-500 dark:to-orange-500' : ''}`;
+    const regClasses = `${classes} ${isAuth ? '' : 'scale-[1.25] text-transparent bg-clip-text bg-linear-60 from-cyan-400 to-emerald-400 dark:from-red-500 dark:to-orange-500'}`;
 
 
 
@@ -39,8 +39,8 @@ const Auth = () => {
     }
 
     return (
-        <div className="flex h-[100vh] bg-gradient-to-br from-neutral-800 to-neutral-900 text-white flex-col justify-center items-center">
-            <div className="flex flex-col w-full max-w-md p-8 rounded-2xl bg-neutral-700 shadow-lg border border-neutral-600">
+        <div className="flex h-[100vh] bg-transparent text-white flex-col justify-center items-center">
+            <div className="flex flex-col w-full max-w-md p-8 rounded-2xl bg-gray-400 dark:bg-neutral-700 shadow-lg transition-colors duration-300 ">
                 <h1 className="text-2xl flex justify-between font-bold text-center mb-6">
                     <span onClick={() => setIsAuth(true)} className={authClasses}>Авторизация</span>
                     |
@@ -48,7 +48,7 @@ const Auth = () => {
                 </h1>
                 {/* Отображение ошибки */}
                 {error && (
-                    <div className="flex items-center gap-2 p-3 mb-4 bg-red-500/20 border border-red-500 rounded-lg text-red-400 font-medium text-sm transition-opacity duration-300">
+                    <div className="flex items-center gap-2 p-3 mb-4 bg-red-500/20 border border-red-500 rounded-lg text-red-500 font-medium text-sm transition-opacity duration-300">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -77,7 +77,8 @@ const Auth = () => {
                             type="text"
                             placeholder="Введите никнейм"
                             onChange={(e) => setUsername(e.target.value)}
-                            className="p-3 rounded-lg bg-neutral-600 text-white placeholder-neutral-400 focus:outline-none focus:ring-3 focus:ring-red-700 transition-all duration-300"
+                            className="p-3 rounded-lg outline-transparent bg-neutral-600 text-white outline-3 hover:outline-emerald-500
+                            dark:hover:outline-amber-500 placeholder-neutral-400 focus:outline-none focus:ring-3 focus:ring-cyan-500 dark:focus:ring-red-700 transition-colors duration-300"
                         />
                     </div>
 
@@ -91,7 +92,8 @@ const Auth = () => {
                             type="password"
                             placeholder="Введите пароль"
                             onChange={(e) => setPassword(e.target.value)}
-                            className="p-3 rounded-lg bg-neutral-600 text-white placeholder-neutral-400 focus:outline-none focus:ring-3 focus:ring-red-700 transition-all duration-300"
+                            className="p-3 rounded-lg outline-transparent bg-neutral-600 text-white outline-3 hover:outline-emerald-600
+                            dark:hover:outline-amber-500 placeholder-neutral-400 focus:outline-none focus:ring-3 focus:ring-cyan-500 dark:focus:ring-red-700 transition-colors duration-300"
                         />
                     </div>
 
@@ -100,13 +102,13 @@ const Auth = () => {
                         (isAuth) ? <button
                             type="submit"
                             onClick={() => handleAuth()}
-                            className="mt-6 py-3 px-6 active-element"
+                            className="mt-6 py-3 px-6 active-element text-white bg-neutral-500 dark:bg-neutral-800 before:bg-linear-45 before:content-[''] before:from-cyan-500 before:to-emerald-500 dark:before:from-red-600 dark:before:to-orange-400"
                         >
                             Войти
                         </button> : <button
                             type="submit"
                             onClick={() => handleRegister()}
-                            className="mt-6 py-3 px-6 active-element"
+                            className="mt-6 py-3 px-6 active-element text-white bg-neutral-500 dark:bg-neutral-800 before:bg-linear-45 before:content-[''] before:from-cyan-500 before:to-emerald-500 dark:before:from-red-600 dark:before:to-orange-400"
                         >
                             Зарегистрироваться
                         </button>

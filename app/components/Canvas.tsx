@@ -1,12 +1,17 @@
 'use client';
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { useEngine } from "../providers/EngineProvider";
+import { ThemeContext } from "../providers/ThemeProvider";
 export const Canvas = () => {
     const { engine, sdk } = useEngine();
-
+    const context = useContext(ThemeContext);
+    if (!context) throw new Error("Engine must be init in Theme Provider");
+    const { theme } = context;
     useEffect(() => {
         if (!engine.isInited) {
-            engine.init("main");
+
+
+            engine.init("main", theme);
         }
     }, []);
 

@@ -1,32 +1,48 @@
 'use client'
 import Link from 'next/link';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { userStore } from '../stores/user-store';
+import { useRouter } from 'next/navigation';
+import { ThemeToggler } from './partials/ThemeToggler';
+import { ThemeContext } from '../providers/ThemeProvider';
 export const Header = () => {
+    const context = useContext(ThemeContext);
+    if (!context) throw new Error('Что-то пошло не так');
+    const { theme } = context;
+
+
+    const router = useRouter();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const handleExit = () => {
+        userStore.clearToken();
+        router.push('/');
+    }
+
     return (
-        <header className="bg-neutral-900 text-white w-full">
+        <header className="bg-gray-300 transition-colors duration-300 dark:bg-neutral-900 dark:text-white w-full">
             <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                <div className="text-5xl font-bold">
+                <div className="text-5xl h-full text-cyan-500 dark:text-amber-500">
                     Web Engine
                 </div>
-                <nav className="hidden md:flex space-x-4">
-                    <Link href="/editor">
-                        <p className="active-element">
+                <nav className="hidden md:flex space-x-4 md:items-center">
+                    <Link href="/projects">
+                        <p className="active-element text-white bg-neutral-400 dark:bg-neutral-800 before:bg-linear-45 before:content-[''] before:from-cyan-500 before:to-emerald-500 dark:before:from-red-600 dark:before:to-orange-400">
                             Проекты
                         </p>
                     </Link>
 
-                    <a href="#" className="active-element">
+                    <a href="#" className="active-element text-white bg-neutral-400 dark:bg-neutral-800 before:bg-linear-45 before:content-[''] before:from-cyan-500 before:to-emerald-500 dark:before:from-red-600 dark:before:to-orange-400">
                         Документация
                     </a>
-                    <button onClick={() => { userStore.clearToken(); }} className="active-element">
+                    <button onClick={() => { handleExit() }} className="active-element text-white bg-neutral-400 dark:bg-neutral-800 before:bg-linear-45 before:content-[''] before:from-cyan-500 before:to-emerald-500 dark:before:from-red-600 dark:before:to-orange-400">
                         Выйти
                     </button>
+
+                    <ThemeToggler />
                 </nav>
                 <button
                     onClick={toggleMenu}

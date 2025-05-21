@@ -9,10 +9,9 @@ export const ObjectItem = ({ removeClick, select, gameObject }: any) => {
         select(gameObject);
     }
     return (
-        <div className="flex justify-between p-2.5 items-center rounded-2xl hover:bg-neutral-600 transition-colors duration-300">
+        <div className="flex justify-between p-2.5 text-white items-center rounded-2xl bg-gray-400 dark:bg-neutral-700 hover:bg-neutral-600 dark:hover:bg-neutral-500 transition-colors duration-300">
             <div onClick={handleSelect} className='flex w-full justify-between' >
                 <div className="flex gap-2">
-                    <img onClick={() => setIsClicked(!isClicked)} className={`transition-transform duration-300 ${rotate}`} height='16px' width='16px' src="/icons/arrow-right.svg" alt="" />
                     <h1 className="text-3xl">{gameObject.tag}</h1>
                 </div>
             </div>
