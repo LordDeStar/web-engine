@@ -4,6 +4,7 @@ import { FileExplorer } from "@/app/components/FileExplorer";
 import { Inspector } from "@/app/components/Inspector";
 import { ObjectHierarchy } from "@/app/components/ObjectHierarchy";
 import { ToolPanel } from "@/app/components/ToolPanel";
+import { sceneStore } from "@/app/stores/scene-store";
 
 type Props = {
     params: Promise<{ projectId: string }>
@@ -11,6 +12,8 @@ type Props = {
 
 const Project = async ({ params }: Props) => {
     const id = Number((await params).projectId);
+
+    sceneStore.loadFromJson(id);
     return (
         <Engine>
             <div className="flex flex-col h-screen border-collapse">

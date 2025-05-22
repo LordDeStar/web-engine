@@ -97,7 +97,7 @@ export class ProjectService {
         if (data.error) {
             return { error: data.error };
         }
-        return { message: data.message };
+        return data;
     }
 
 }

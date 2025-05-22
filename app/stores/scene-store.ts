@@ -54,11 +54,20 @@ class SceneStore {
         );
         const response = await ProjectService.saveProject(projectId, jsonObjects);
     }
-    public async loadFromJson(objects: string[]): Promise<void> {
-        let json = objects.map((object) => {
-            return JSON.parse(object);
-        });
-        console.log(json);
+    public async loadFromJson(projectId: number): Promise<void> {
+
+        const path = await ProjectService.loadProject(projectId);
+
+        const response = await fetch(path);
+        if (response.ok) {
+            const objects: any[] = JSON.parse(await response.text());
+
+            let json = objects.map((object) => {
+                return JSON.parse(object);
+            });
+            console.log(json);
+        }
+
     }
 }
 
