@@ -25,10 +25,10 @@ export const CreateFolderModal = ({ project, parent, onClose }: any) => {
             <div className="absolute h-screen w-screen bg-black opacity-40" >
             </div>
             <div className="flex p-2.5 gap-2.5 flex-col z-11 rounded-2xl text-white bg-gray-300 dark:bg-neutral-600" >
-                <h1 className="text-2xl flex justify-between text-cyan-500">
+                <h1 className="text-2xl flex justify-between text-cyan-500 dark:text-white">
                     Название папки:
                     <button
-                        className="p-1 rounded-md text-red-500 hover:bg-red-500 hover:text-white transition-colors duration-200"
+                        className="p-1 rounded-md text-red-500 hover:bg-red-500  hover:text-white transition-colors duration-200"
                         aria-label="Закрыть модальное окно"
                         onClick={() => onClose(false)}                   >
                         <svg
@@ -48,7 +48,7 @@ export const CreateFolderModal = ({ project, parent, onClose }: any) => {
                     </button>
                 </h1>
                 <input onChange={(e) => setTitle(e.target.value)} className="text-2xl mt-1 block w-full px-3 py-2 rounded-md outline-3 hover:outline-emerald-600
-                            dark:hover:outline-amber-500 placeholder-gray-300 outline-transparent bg-gray-400 focus:outline-none focus:ring-3 focus:ring-cyan-500 dark:focus:ring-red-700 transition-colors duration-300" placeholder="Введите название сюда..." />
+                            dark:hover:outline-amber-500 placeholder-gray-300 outline-transparent bg-gray-400 dark:bg-neutral-800 focus:outline-none focus:ring-3 focus:ring-cyan-500 dark:focus:ring-red-700 transition-colors duration-300" placeholder="Введите название сюда..." />
 
 
                 <button className="active-element text-white bg-neutral-500 dark:bg-neutral-800 before:bg-linear-45 before:content-[''] before:from-cyan-500 before:to-emerald-500 dark:before:from-red-600 dark:before:to-orange-400" onClick={createFolder}>Создать папку</button>

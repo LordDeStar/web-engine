@@ -5,8 +5,12 @@ import { userStore } from '../stores/user-store';
 import { useRouter } from 'next/navigation';
 import { ThemeToggler } from './partials/ThemeToggler';
 import { ThemeContext } from '../providers/ThemeProvider';
+import { useEngine } from '../providers/EngineProvider';
+import { sceneStore } from '../stores/scene-store';
+
 export const Header = () => {
     const context = useContext(ThemeContext);
+    const { selectObject } = useEngine();
     if (!context) throw new Error('Что-то пошло не так');
     const { theme } = context;
 
@@ -19,6 +23,8 @@ export const Header = () => {
 
     const handleExit = () => {
         userStore.clearToken();
+        selectObject(undefined);
+        sceneStore.clearObjects();
         router.push('/');
     }
 
@@ -30,7 +36,7 @@ export const Header = () => {
                 </div>
                 <nav className="hidden md:flex space-x-4 md:items-center">
                     <Link href="/projects">
-                        <p className="active-element text-white bg-neutral-400 dark:bg-neutral-800 before:bg-linear-45 before:content-[''] before:from-cyan-500 before:to-emerald-500 dark:before:from-red-600 dark:before:to-orange-400">
+                        <p onClick={() => { selectObject(undefined); sceneStore.clearObjects() }} className="active-element text-white bg-neutral-400 dark:bg-neutral-800 before:bg-linear-45 before:content-[''] before:from-cyan-500 before:to-emerald-500 dark:before:from-red-600 dark:before:to-orange-400">
                             Проекты
                         </p>
                     </Link>

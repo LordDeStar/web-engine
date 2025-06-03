@@ -21,7 +21,7 @@ export const Select = ({ values }: { values: any[] }) => {
                 className="flex px-2.5 justify-between items-center cursor-pointer"
                 onClick={handleOpen}
             >
-                <h1 className="text-2xl w-3/4">{text || 'Select a component'}</h1>
+                <h1 className="text-2xl w-3/4">{text || 'Выберите компонент'}</h1>
                 <img
                     height="16px"
                     width="16px"

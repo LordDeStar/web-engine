@@ -1,6 +1,7 @@
 import { makeAutoObservable, observable } from "mobx";
 import SDK from '@/public/assets/scripts/engine';
 import { ProjectService } from "../services/project-service";
+import { GameService } from '../services/game-service';
 class SceneStore {
     public engine: any;
     private currentTheme: string;
@@ -20,9 +21,13 @@ class SceneStore {
         if (this.engine) this.engine.start(theme);
     }
 
+    public clearObjects(): void {
+        this.objects = [];
+        this.engine._objects = [];
+    }
+
     public async addObject(tag: string): Promise<void> {
-        const geometry = await SDK.TemplateGeometry.loadFromOBJ('/assets/models/cube/cube.obj');
-        const renderer = new SDK.Renderer(geometry, '/assets/models/cube/default.mtl', true);
+        const renderer = new SDK.Renderer('/assets/models/cube/cube.obj', '/assets/models/cube/default.mtl', true, undefined, [1, 1, 1, 1]);
         const box = new SDK.GameObject(tag);
         box.transform.position[0] = 0;
         box.transform.position[1] = 0;
@@ -57,18 +62,27 @@ class SceneStore {
     public async loadFromJson(projectId: number): Promise<void> {
 
         const path = await ProjectService.loadProject(projectId);
-
-        const response = await fetch(path);
+        console.log(path);
+        const response = await fetch(path.path);
         if (response.ok) {
-            const objects: any[] = JSON.parse(await response.text());
+            this.objects = [];
+            const objects: any[] = await response.json();
 
             let json = objects.map((object) => {
                 return JSON.parse(object);
             });
-            console.log(json);
+            this.objects = await Promise.all(json.map(async (obj) => {
+                return await GameService.createObjectsFromJson(obj);
+            }))
+            console.log(this.objects)
+            this.engine._objects = this.objects;
+
+            console.log(this.engine._objects);
+            this.engine.start(this.currentTheme);
         }
 
     }
+
 }
 
 export const sceneStore = new SceneStore();

@@ -49,7 +49,7 @@ export const Transform = ({ transform }: any) => {
         <div className="flex flex-col p-2 gap-y-2.5">
 
             <div className="flex flex-col">
-                <h1 className="text-2xl">Scale:</h1>
+                <h1 className="text-2xl">Размер:</h1>
                 <div className="flex flex-col ml-2.5 gap-y-2">
                     <div className="flex gap-2">
                         <h1>X</h1>
@@ -69,7 +69,7 @@ export const Transform = ({ transform }: any) => {
             <hr className="border-neutral-800" />
 
             <div className="flex flex-col">
-                <h1 className="text-2xl">Rotation:</h1>
+                <h1 className="text-2xl">Поворот:</h1>
                 <div className="flex flex-col ml-2.5 gap-y-2">
                     <div className="flex gap-2">
                         <h1>X</h1>
@@ -89,7 +89,7 @@ export const Transform = ({ transform }: any) => {
             <hr className="border-neutral-800" />
 
             <div className="flex flex-col">
-                <h1 className="text-2xl">Position:</h1>
+                <h1 className="text-2xl">Координаты:</h1>
                 <div className="flex flex-col ml-2.5 gap-y-2">
                     <div className="flex gap-2">
                         <h1>X</h1>

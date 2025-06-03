@@ -1,6 +1,12 @@
-import { EngineProvider } from "@/app/providers/EngineProvider";
+'use client';
 
-export const Engine = ({ children }: { children: React.ReactNode }) => {
+import { EngineProvider } from "@/app/providers/EngineProvider";
+import { sceneStore } from "../stores/scene-store";
+import { useEffect } from "react";
+
+export const Engine = ({ projectId, children }: { projectId: number, children: React.ReactNode }) => {
+
+    useEffect(() => { sceneStore.loadFromJson(projectId) }, []);
     return (
         <EngineProvider width='50vw' height='60vh'>
             {children}

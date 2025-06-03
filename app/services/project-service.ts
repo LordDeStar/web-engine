@@ -3,6 +3,7 @@ import { fileStore } from "../stores/file-store";
 import api from "../utils/api";
 
 export class ProjectService {
+
     public static async getProjects(): Promise<any> {
         const { data } = await api.get('/projects/all');
         return data;
@@ -98,6 +99,22 @@ export class ProjectService {
             return { error: data.error };
         }
         return data;
+    }
+    public static async downloadArchive(projectId: number) {
+        const response = await api.get(`/projects/${projectId}/export`, {
+            responseType: 'blob'
+        });
+
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'project.zip');
+        document.body.appendChild(link);
+        link.click();
+
+        // Очищаем ссылку
+        link.remove();
+
     }
 
 }

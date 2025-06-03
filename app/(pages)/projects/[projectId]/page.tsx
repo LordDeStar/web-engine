@@ -12,10 +12,8 @@ type Props = {
 
 const Project = async ({ params }: Props) => {
     const id = Number((await params).projectId);
-
-    sceneStore.loadFromJson(id);
     return (
-        <Engine>
+        <Engine projectId={id}>
             <div className="flex flex-col h-screen border-collapse">
                 <div className="w-full h-12 border-b-1 border-gray-300 dark:border-white border-collapse">
                     <ToolPanel projectId={id} />

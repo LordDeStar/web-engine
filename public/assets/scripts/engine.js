@@ -3794,16 +3794,17 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 class Renderer {
-    constructor(geometry, materialUrl, isDrawingEdges = false) {
+    constructor(geometryUrl, materialUrl, isDrawingEdges = false, textureUrl = undefined, color) {
         this.name = "renderer";
         this.owner = null;
         this._projection = gl_matrix__WEBPACK_IMPORTED_MODULE_5__.create();
         this._viewMatrix = gl_matrix__WEBPACK_IMPORTED_MODULE_5__.create();
         this.isDrawingEdges = isDrawingEdges;
-        this.loadGeometry(geometry);
+        this.loadFromUrl(geometryUrl);
         this._isMaterialLoaded = false;
         this._materialUrl = materialUrl;
-        this.color = [0, 0, 0, 0];
+        this.color = color;
+        this.textureUrl = textureUrl;
     }
     OnStart() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -3827,7 +3828,10 @@ class Renderer {
                 }
                 this.material.setCurrentMaterial(0);
                 this._isMaterialLoaded = true;
-                this.color = [this.material._color[0], this.material._color[1], this.material._color[2], this.material._color[3]];
+                this.setColor(this.color[0], this.color[1], this.color[2], this.color[3]);
+                if (this.textureUrl) {
+                    this.loadTexture(this.textureUrl);
+                }
             }
         });
     }
@@ -3838,6 +3842,10 @@ class Renderer {
     }
     setColor(r, g, b, a) {
         var _a;
+        this.color[0] = r;
+        this.color[1] = g;
+        this.color[2] = b;
+        this.color[3] = a;
         (_a = this.material) === null || _a === void 0 ? void 0 : _a.setColor(r, g, b, a);
     }
     OnResize(args) {
@@ -3857,6 +3865,7 @@ class Renderer {
     loadTexture(url) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a, _b;
+            this.textureUrl = url;
             yield ((_a = this.material) === null || _a === void 0 ? void 0 : _a.loadTexture(url, (_b = this.material) === null || _b === void 0 ? void 0 : _b.getCurrentMaterialIndex()));
         });
     }
@@ -3864,6 +3873,7 @@ class Renderer {
         return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
             resolve(JSON.stringify({
                 name: this.name,
+                color: Array.from(this.color),
                 materialUrl: this._materialUrl,
                 geometryUrl: this.geometryUrl,
                 textureUrl: this.textureUrl
@@ -4144,9 +4154,7 @@ class Engine {
             _gl_gl__WEBPACK_IMPORTED_MODULE_1__.gl.enable(_gl_gl__WEBPACK_IMPORTED_MODULE_1__.gl.DEPTH_TEST);
             window.addEventListener('resize', () => this.resize());
             yield Promise.all(this._objects.map(obj => Promise.all(obj.components.map((component) => __awaiter(this, void 0, void 0, function* () {
-                if (typeof component.OnStart === 'function') {
-                    yield component.OnStart();
-                }
+                return yield component.OnStart();
             })))));
             this.resize();
             this.loop();
@@ -4966,7 +4974,6 @@ class GameObject {
     toJson() {
         return __awaiter(this, void 0, void 0, function* () {
             const componentsJson = yield Promise.all(this.components.map((component) => __awaiter(this, void 0, void 0, function* () { return yield component.toJson(); })));
-            // Сериализуем объект после завершения всех операций
             return JSON.stringify({
                 tag: this.tag,
                 transform: yield this.transform.toJson(),

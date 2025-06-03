@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "./components/Header";
 import { ThemeProvider } from "./providers/ThemeProvider";
+import { EngineProvider } from "./providers/EngineProvider";
 
 
 
@@ -20,8 +21,10 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className="bg-white dark:bg-neutral-800 transition-colors duration-300">
         <ThemeProvider>
-          <Header />
-          {children}
+          <EngineProvider>
+            <Header />
+            {children}
+          </EngineProvider>
         </ThemeProvider>
 
       </body>

@@ -1,7 +1,7 @@
 'use client'
 
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { projectsStore } from "@/app/stores/projects-store";
 import { ProjectService } from "@/app/services/project-service";
 import { ProjectItem } from "@/app/components/partials/ProjectItem";
@@ -26,11 +26,11 @@ const Projects = observer(() => {
     }, []);
 
 
+
     const getProjects = () => {
 
         if (projectsStore.projects) {
-            console.log(projectsStore.projects)
-            return projectsStore.projects.map((project, index) => (
+            return projectsStore.getProjects().map((project, index) => (
                 <ProjectItem key={index} project={project} />
             ))
         }
