@@ -10,11 +10,13 @@ const SelectItem = ({ file, changeSelected }: any) => {
 }
 
 
-export const FileSelector = observer(({ selected, handleSelect }: any) => {
+export const FileSelector = observer(({ selected, handleSelect, allowed }: any) => {
     const [isClicked, setIsClicked] = useState<boolean>(false);
 
     const classes = `${isClicked ? 'rotate-90 ' : ''} transition-transform  duration-300`;
-
+    const isAllowed = (file: any) => {
+        return allowed.includes(file.title.split('.')[1]);
+    }
     const roundedClasses = `${isClicked ? 'rounded-tl-2xl rounded-tr-2xl z-10' : 'rounded-2xl z-1'} `
     return (
         <div onClick={() => setIsClicked(!isClicked)} className={`flex relative h-12 p-2 items-center text-white justify-between ${roundedClasses} bg-gray-400 dark:bg-neutral-600 transition-all duration-300 z-1`}>
@@ -27,7 +29,7 @@ export const FileSelector = observer(({ selected, handleSelect }: any) => {
             {
                 isClicked && <div className="absolute top-[50px] left-0 w-full rounded-bl-2xl rounded-br-2xl bg-gray-400 dark:bg-neutral-600 min-h-8 z-11">
                     {
-                        fileStore.files.map((file: any, index: number) => (
+                        fileStore.files.filter(f => isAllowed(f)).map((file: any, index: number) => (
                             <SelectItem key={index} file={file} changeSelected={() => handleSelect(file)} />
                         ))
                     }

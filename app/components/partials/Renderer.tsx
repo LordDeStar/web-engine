@@ -74,12 +74,12 @@ export const Renderer = ({ renderer }: any) => {
 
             <div className='flex flex-col'>
                 <h1 className='text-2xl mb-2'>Геометрия</h1>
-                <FileSelector selected={geometry} handleSelect={(file: any) => setGeometry(file)} />
+                <FileSelector selected={geometry} handleSelect={(file: any) => setGeometry(file)} allowed={['obj']} />
             </div>
             <hr className="border-neutral-800" />
             <div className='flex flex-col'>
                 <h1 className='text-2xl mb-2'>Текстура</h1>
-                <FileSelector selected={texture} handleSelect={(file: any) => setTexture(file)} />
+                <FileSelector selected={texture} handleSelect={(file: any) => setTexture(file)} allowed={['png', 'jpg']} />
             </div>
         </div>
     );
