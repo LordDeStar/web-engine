@@ -1,6 +1,7 @@
 import { error } from 'console';
 import { fileStore } from "../stores/file-store";
 import api from "../utils/api";
+import { projectsStore } from '../stores/projects-store';
 
 export class ProjectService {
 
@@ -8,7 +9,6 @@ export class ProjectService {
         const { data } = await api.get('/projects/all');
         return data;
     }
-
     public static async createProject(title: string, description: string): Promise<any> {
         const { data } = await api.post('/projects/create', { title, description });
 
@@ -17,7 +17,6 @@ export class ProjectService {
         }
         return await this.getProjects();
     }
-
     public static async getStartFolders(project: number): Promise<any> {
         const { data } = await api.get(`/projects/${project}/start-folders`);
 
@@ -27,7 +26,6 @@ export class ProjectService {
         fileStore.setFolders(data);
 
     }
-
     public static async getFolders(folderId: number): Promise<any> {
         const { data } = await api.get(`/projects/${folderId}/folders`);
         if (data.error) {
@@ -35,8 +33,6 @@ export class ProjectService {
         }
         fileStore.setFolders(data);
     }
-
-
     public static async createFolder(projectId: number, title: string, parentId: number | undefined) {
         const { data } = await api.post('/projects/create-folder', { title, projectId, parentId });
         if (data.error) {
@@ -48,8 +44,6 @@ export class ProjectService {
 
         else await this.getStartFolders(projectId);
     }
-
-
     public static async getFiles(parentId: number | undefined) {
         const { data } = await api.get(`/projects/${parentId}/files`);
         if (data.error) {
@@ -64,7 +58,6 @@ export class ProjectService {
         }
         fileStore.setFiles(data);
     }
-
     public static async uploadFile(projectId: number, parentId: number, formData: any) {
         const { data } = await api.post('/projects/upload-file', formData, {
             headers: {
@@ -81,7 +74,6 @@ export class ProjectService {
         await this.getFiles(parentId);
 
     }
-
     public static async saveProject(projectId: number, json: string[]) {
         const { data } = await api.post(`/projects/${projectId}/save`, { json });
 
@@ -90,8 +82,6 @@ export class ProjectService {
         }
         return { message: data.message };
     }
-
-
     public static async loadProject(projectId: number) {
         const { data } = await api.get(`/projects/${projectId}/load`);
 
@@ -114,6 +104,13 @@ export class ProjectService {
 
         // Очищаем ссылку
         link.remove();
+
+    }
+    public static async deleteProject(projectId: number) {
+        const { data } = await api.delete(`/projects/${projectId}/delete`);
+        if (data.error) return data;
+        projectsStore.setProjects(await ProjectService.getProjects());
+        return data;
 
     }
 

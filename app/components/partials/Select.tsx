@@ -1,6 +1,7 @@
 'use client';
-import { useState, useRef } from 'react';
-export const Select = ({ values }: { values: any[] }) => {
+import { useState } from 'react';
+
+export const Select = ({ values, onSelect }: { values: any[], onSelect: Function }) => {
     const [text, setText] = useState<string>('');
     const [isClicked, setIsClicked] = useState<boolean>(false);
     const options = ['', ...values];
@@ -11,12 +12,13 @@ export const Select = ({ values }: { values: any[] }) => {
 
     const handleSelect = (newText: string) => {
         setText(newText);
+        onSelect(newText);
         setIsClicked(false);
     };
 
     return (
         <div className={`relative flex flex-col w-full p-3 ${isClicked ? 'rounded-t-[6px]' : 'rounded-[6px]'} text-white  bg-gray-400 dark:bg-neutral-700`}>
-            {/* Заголовок */}
+
             <div
                 className="flex px-2.5 justify-between items-center cursor-pointer"
                 onClick={handleOpen}
@@ -32,7 +34,6 @@ export const Select = ({ values }: { values: any[] }) => {
                 />
             </div>
 
-            {/* Выпадающий список */}
             <div
                 className={`absolute top-14 left-0 border-t-2 border-t-transparent w-full overflow-hidden transition-all duration-300 rounded-b-2xl ${isClicked ? 'max-h-56 opacity-100  border-t-neutral-200' : 'max-h-0 opacity-0'
                     }`}

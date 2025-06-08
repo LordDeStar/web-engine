@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Transform } from "./Transform";
 import { Renderer } from "./Renderer";
+import { Script } from "./Script";
 
 export const Component = ({ componentObj }: any) => {
     const [isClicked, setIsClicked] = useState<boolean>(false);
@@ -13,6 +14,8 @@ export const Component = ({ componentObj }: any) => {
         switch (obj?.name) {
             case 'renderer':
                 return <Renderer renderer={obj} />
+            case 'script':
+                return <Script script={obj} />
         }
     };
 

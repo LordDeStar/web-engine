@@ -1,3 +1,4 @@
+
 import { makeAutoObservable, observable } from "mobx";
 import SDK from '@/public/assets/scripts/engine';
 import { ProjectService } from "../services/project-service";
@@ -5,11 +6,13 @@ import { GameService } from '../services/game-service';
 class SceneStore {
     public engine: any;
     private currentTheme: string;
+    @observable public allowedToStart: boolean;
     @observable public objects: any[] = []; // Наблюдаемый массив объектов
 
     constructor() {
         makeAutoObservable(this);
         this.currentTheme = 'light';
+        this.allowedToStart = false;
     }
 
     public initEngine(): void {
@@ -24,6 +27,27 @@ class SceneStore {
     public clearObjects(): void {
         this.objects = [];
         this.engine._objects = [];
+    }
+
+    public addComponent(object: any, componentName: string, data?: any, subname?: string) {
+        switch (componentName) {
+            case 'script':
+                if (!data) throw new Error('DATA required for script');
+                const script = new SDK.Script(data);
+                object.AddComponent(script);
+
+        }
+        this.engine.start(this.currentTheme);
+    }
+
+    public start(): void {
+        this.allowedToStart = !this.allowedToStart;
+
+        this.engine._objects.forEach((element: any) => {
+            element.components.forEach((component: any) => {
+                component.allowedToStart = this.allowedToStart;
+            });
+        });
     }
 
     public async addObject(tag: string): Promise<void> {
@@ -59,6 +83,8 @@ class SceneStore {
         );
         const response = await ProjectService.saveProject(projectId, jsonObjects);
     }
+
+
     public async loadFromJson(projectId: number): Promise<void> {
 
         const path = await ProjectService.loadProject(projectId);
