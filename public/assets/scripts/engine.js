@@ -3724,13 +3724,35 @@
   class Camera {
       constructor(name) {
           this.owner = null;
-          this.isGameStart = false;
+          this.allowedToStart = false;
+          this.speed = 1;
           this.name = "camera";
           this.viewMatrix = gl_matrix__WEBPACK_IMPORTED_MODULE_1__.create();
           this.subname = name;
           this.eye = gl_matrix__WEBPACK_IMPORTED_MODULE_2__.fromValues(0, 0, 3);
           this.center = gl_matrix__WEBPACK_IMPORTED_MODULE_2__.fromValues(0, 0, 5);
           this.up = gl_matrix__WEBPACK_IMPORTED_MODULE_2__.fromValues(0, 1, 0);
+          _eng__WEBPACK_IMPORTED_MODULE_0__.Engine.eventEmitter.on('keydown', (event) => {
+              const { data } = event;
+              if (!this.owner)
+                  throw new Error('Работай кусок говна');
+              switch (data.key) {
+                  case 'w':
+                      this.owner.transform.position[2] += this.speed;
+                      break;
+                  case 's':
+                      this.owner.transform.position[2] -= this.speed;
+                      break;
+                  case 'd':
+                      this.owner.transform.position[0] += this.speed;
+                      this.center[0] += this.speed;
+                      break;
+                  case 'a':
+                      this.owner.transform.position[0] -= this.speed;
+                      this.center[0] -= this.speed;
+                      break;
+              }
+          });
       }
       updateMatrix() {
           if (this.owner) {
@@ -3741,13 +3763,13 @@
       OnStart() {
           return __awaiter(this, void 0, void 0, function* () {
               this.updateMatrix();
-              if (this.isGameStart)
+              if (this.allowedToStart)
                   _eng__WEBPACK_IMPORTED_MODULE_0__.Engine.viewMatrix = this.viewMatrix;
           });
       }
       OnUpdate() {
           this.updateMatrix();
-          if (this.isGameStart)
+          if (this.allowedToStart)
               _eng__WEBPACK_IMPORTED_MODULE_0__.Engine.viewMatrix = this.viewMatrix;
       }
       BeforeRemove() {
@@ -4321,8 +4343,8 @@
           // Применяем обратную матрицу вида
           gl_matrix__WEBPACK_IMPORTED_MODULE_1__.transformMat4(worldSpace, viewSpace, inverseViewMatrix);
           // 5. Нормализуем вектор (делим на W)
-          const worldX = worldSpace[0] / worldSpace[3];
-          const worldY = worldSpace[1] / worldSpace[3];
+          const worldX = worldSpace[0] / worldSpace[3] + 0.08;
+          const worldY = worldSpace[1] / worldSpace[3] + 0.026;
           const worldZ = worldSpace[2] / worldSpace[3];
           return { worldX, worldY, worldZ };
       }

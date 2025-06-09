@@ -1,3 +1,4 @@
+import { Transform } from './../components/partials/Transform';
 
 import { makeAutoObservable, observable } from "mobx";
 import SDK from '@/public/assets/scripts/engine';
@@ -35,6 +36,11 @@ class SceneStore {
                 if (!data) throw new Error('DATA required for script');
                 const script = new SDK.Script(data);
                 object.AddComponent(script);
+                break;
+            case 'camera':
+                const camera = new SDK.Camera(subname);
+                object.AddComponent(camera);
+                break;
 
         }
         this.engine.start(this.currentTheme);
@@ -60,6 +66,17 @@ class SceneStore {
         box.AddComponent(renderer);
 
         // Добавляем объект в наблюдаемый массив
+
+        if (this.objects.length == 0) {
+            const cameraObject = new SDK.GameObject("camera-object");
+            cameraObject.transform.position[0] = 0;
+            cameraObject.transform.position[1] = 0;
+            cameraObject.transform.position[2] = 0;
+
+            this.addComponent(cameraObject, 'camera', undefined, 'main-camera');
+
+            this.objects.push(cameraObject);
+        }
         this.objects.push(box);
 
         // Синхронизируем с движком
